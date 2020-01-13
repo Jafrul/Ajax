@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            .labl{
+                width: 100px;
+                margin: 10px;
+            }
+            .inpt{
+                width: 300px;
+                margin: 10px;
+            }
+            table{
+                height: 100px;
+                background-color: wheat;
+                margin: 10px;
+                width: 50%;
+                border-collapse: collapse;
+            }
+            th,td{
+                margin: auto;
+                border: 1px solid black;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div>TODO write content</div>
+
+        <form id="myForm" method="POST" action="ajaxcontrol">
+            <span class="labl">ID: </span>
+            <input id="sid" class="inpt" type="text" value="" placeholder="ID" name="id"/><br/>
+            <span class="labl">Name: </span>
+            <input id="name" class="inpt" type="text" value="" placeholder="Name" name="name"/><br/>
+            <span  class="labl">Gender: </span>
+            <input id="gender" class="inpt" type="text" value="" placeholder="Gender" name="gender"/><br/>
+            <span  class="labl">Address: </span>
+            <input id="add" class="inpt" type="text" value="" placeholder="Address" name="address"/><br/>
+            <button id="btnform" onclick="addUser();return false">Click here</button>
+        </form>
+
+        <!--<button id="btn">Click</button>-->
+        <div >
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Gender</th>
+                        <th>Address</th>
+                    </tr>
+                </thead>
+
+                <tbody id="target">
+
+                </tbody>
+            </table>
+        </div>
+        <script>
+            function adddata() {
+
+                var sid = document.getElementById("sid").value;
+                var name = document.getElementById("name").value;
+                var gender = document.getElementById("gender").value;
+                var address = document.getElementById("add").value;
+                var trow = document.createElement("tr");
+                var tdata1 = document.createElement("td");
+                trow.appendChild(tdata1);
+                var tdata2 = document.createElement("td");
+                trow.appendChild(tdata2);
+                var tdata3 = document.createElement("td");
+                trow.appendChild(tdata3);
+                var tdata4 = document.createElement("td");
+                trow.appendChild(tdata4);
+                var node1 = document.createTextNode(sid);
+                tdata1.appendChild(node1);
+                var node2 = document.createTextNode(name);
+                tdata2.appendChild(node2);
+                var node3 = document.createTextNode(gender);
+                tdata3.appendChild(node3);
+                var node4 = document.createTextNode(address);
+                tdata4.appendChild(node4);
+                var element = document.getElementById("target");
+                element.appendChild(trow);
+            }
+
+
+        </script>
+
+
+
+        <script>
+//            document.getElementById('btn').addEventListener('click', render);
+            function addUser() {
+                var xhttp;
+                xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var obj = this.responseText;
+                        var jobj = JSON.parse(obj);
+                        var tabledata = "";
+                        for (var i = 0; i < jobj.length; i++) {
+                            tabledata += "<tr><td>" + jobj[i].id + "</td><td>" + jobj[i].name + "</td><td>" + jobj[i].gender + "</td><td>" + jobj[i].address + "</td></tr>";
+                        }
+                        document.getElementById("target").innerHTML = tabledata;
+                        
+                    }
+                };
+                
+                
+                 var sid = document.getElementById("sid").value;
+                var name = document.getElementById("name").value;
+                var gender = document.getElementById("gender").value;
+                var address = document.getElementById("add").value;
+                
+                
+                var requestUrl="ajaxcontrol?action=add&id="+sid+"&name="+name+"&gender="+gender+"&address="+address;
+                
+                xhttp.open("GET",requestUrl , true);
+                xhttp.send();
+            }
+            
+                   function randerTable() {
+                var xhttp;
+                xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var obj = this.responseText;
+                        var jobj = JSON.parse(obj);
+                        var tabledata = "";
+                        for (var i = 0; i < jobj.length; i++) {
+                            tabledata += "<tr><td>" + jobj[i].id + "</td><td>" + jobj[i].name + "</td><td>" + jobj[i].gender + "</td><td>" + jobj[i].address + "</td></tr>";
+                        }
+                        document.getElementById("target").innerHTML = tabledata;
+                        
+                    }
+                };
+                xhttp.open("GET", "ajaxcontrol", true);
+                xhttp.send();
+            }
+             randerTable() ;
+            
+        </script>
+    </body>
+</html>
